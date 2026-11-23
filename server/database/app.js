@@ -1,35 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
-const  cors = require('cors')
+const path = require('path');
+const cors = require('cors');
 const app = express()
-const port = 3030;
+const port = Number(process.env.PORT || 3030);
 
 app.use(cors())
-app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
-const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
-const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
+const reviews_data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8'));
+const dealerships_data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'dealerships.json'), 'utf8'));
 
-mongoose.connect("mongodb://mongo_db:27017/",{'dbName':'dealershipsDB'});
+const mongoUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/";
 
 
 const Reviews = require('./review');
 
 const Dealerships = require('./dealership');
-
-try {
-  Reviews.deleteMany({}).then(()=>{
-    Reviews.insertMany(reviews_data['reviews']);
-  });
-  Dealerships.deleteMany({}).then(()=>{
-    Dealerships.insertMany(dealerships_data['dealerships']);
-  });
-  
-} catch (error) {
-  console.error('Error initializing sample dealership data', error);
-}
-
 
 // Express route to home
 app.get('/', async (req, res) => {
@@ -125,6 +113,27 @@ app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
 });
 
 // Start the Express server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+async function startServer() {
+  try {
+    await mongoose.connect(mongoUri, {
+      dbName: 'dealershipsDB',
+      serverSelectionTimeoutMS: 12000
+    });
+    console.log('Connected to MongoDB');
+    if (await Dealerships.countDocuments() === 0) {
+      await Dealerships.insertMany(dealerships_data.dealerships);
+      console.log('Loaded sample dealerships');
+    }
+    if (await Reviews.countDocuments() === 0) {
+      await Reviews.insertMany(reviews_data.reviews);
+      console.log('Loaded sample reviews');
+    }
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Cannot start dealership API:', error);
+    process.exit(1);
+  }
+}
+startServer();
