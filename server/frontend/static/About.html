@@ -1,68 +1,58 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <!-- Link the style sheet here -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us | Best Cars</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { background: #f5f9fb; }
+    .team-card { background: #fff; border-radius: 12px; box-shadow: 0 3px 18px #182d3b12; overflow: hidden; height: 100%; }
+    .team-card img { width: 100%; height: 230px; object-fit: cover; }
+    .team-card .card-body { padding: 1.4rem; }
+    .team-card a { overflow-wrap: anywhere; }
+    .about-banner { background: #ebf8fa; padding: 2.5rem; margin: 2rem auto; border-radius: 14px; }
+  </style>
 </head>
-<div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise">
     <div class="container-fluid">
-      <h2 style="padding-right: 5%;">Dealerships</h2>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" style="font-size: larger;" href="/about">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
-          </li>
-        </ul>
+      <a class="navbar-brand fw-bold" href="/">Best Cars Dealership</a>
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link active" aria-current="page" href="/about/">About Us</a>
+        <a class="nav-link" href="/contact/">Contact Us</a>
       </div>
     </div>
   </nav>
-  
-    <div class="card" style="width: 80%;margin: auto; margin-top:5%;">
-      <div class="banner" name="about-header">
-      <!-- Insert header information here -->
-      </div>
-      <div style="display: flex;flex-direction: row; margin:auto">
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person1</p>
-          <p>Person1 Title</p>
-          <p class="card-text">Some text that explains the person1 in about 2 short sentences</p>
-          <p>person1@example.com</p>
-        </div>
-      </div>
-
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person2</p>
-          <p>Person2 Title</p>
-          <p class="card-text">Some text that explains the person2 in about 2 short sentences</p>
-          <p>person2@example.com</p>
-        </div>
-      </div>
-
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person3</p>
-          <p>Person3 Title</p>
-          <p class="card-text">Some text that explains the person3 in about 2 short sentences</p>
-          <p>person3@example.com</p>
-        </div>
-      </div>
+  <main class="container py-4">
+    <section class="about-banner" name="about-header">
+      <h1>About Us</h1>
+      <p>Welcome to Best Cars dealership, home to the best cars in North America. We connect customers with domestic and imported vehicles at reasonable prices, verified dealerships and useful customer reviews.</p>
+      <p>Our team is committed to making your next vehicle purchase transparent, convenient and informed.</p>
+    </section>
+    <h2 class="mb-4">Meet Our Team</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><article class="team-card">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Professional portrait of a team member">
+        <div class="card-body"><h3 class="h5">Jordan Ellis</h3>
+          <p class="fw-semibold">General Manager</p><p>Jordan oversees dealership partnerships and ensures customers receive clear, reliable service information.</p>
+          <a href="mailto:jordan.ellis@bestcars.example">jordan.ellis@bestcars.example</a>
+        </div></article></div>
+      <div class="col-md-4"><article class="team-card">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Professional portrait of a team member">
+        <div class="card-body"><h3 class="h5">Maya Rivera</h3>
+          <p class="fw-semibold">Customer Experience Lead</p><p>Maya helps drivers compare dealerships, understand their choices and share helpful feedback.</p>
+          <a href="mailto:maya.rivera@bestcars.example">maya.rivera@bestcars.example</a>
+        </div></article></div>
+      <div class="col-md-4"><article class="team-card">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Professional portrait of a team member">
+        <div class="card-body"><h3 class="h5">Priya Shah</h3>
+          <p class="fw-semibold">Technology &amp; Operations Manager</p><p>Priya supports the technology that keeps listings, reviews and dealership details accessible.</p>
+          <a href="mailto:priya.shah@bestcars.example">priya.shah@bestcars.example</a>
+        </div></article></div>
     </div>
-    </div>
-    </div>
-    
-</div>
-
+  </main>
+</body>
 </html>
