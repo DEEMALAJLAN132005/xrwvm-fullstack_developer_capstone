@@ -66,6 +66,27 @@ echo "curl -X GET \"$url\"" > getallcarmakes
 curl --silent --show-error -X GET "$url" >> getallcarmakes || true
 printf '\n' >> getallcarmakes
 
+
+# Create a disposable test account only inside this lab database.
+# Its credentials are kept in the local evidence folder (not in Git).
+cd "$DIR/server"
+export CAPSTONE_TEST_USER="capstone_demo"
+export CAPSTONE_TEST_PASS="$(python -c 'import secrets; print(secrets.token_urlsafe(18))')"
+python manage.py shell -c 'import os; from django.contrib.auth.models import User; u, _ = User.objects.get_or_create(username=os.environ["CAPSTONE_TEST_USER"]); u.set_password(os.environ["CAPSTONE_TEST_PASS"]); u.email="demo@example.com"; u.save()'
+cd "$DIR/evidence"
+printf '%s\n' "Username: $CAPSTONE_TEST_USER" "Password: $CAPSTONE_TEST_PASS" > demo_login_credentials.txt
+chmod 600 demo_login_credentials.txt
+payload="$(printf '{"userName":"%s","password":"%s"}' "$CAPSTONE_TEST_USER" "$CAPSTONE_TEST_PASS")"
+login_url="http://127.0.0.1:8000/djangoapp/login"
+echo "curl -X POST -H 'Content-Type: application/json' -d '$payload' '$login_url'" > loginuser
+curl --silent --show-error -c session.cookies -X POST -H 'Content-Type: application/json' -d "$payload" "$login_url" >> loginuser || true
+printf '\n' >> loginuser
+logout_url="http://127.0.0.1:8000/djangoapp/logout"
+echo "curl -X GET -b session.cookies '$logout_url'" > logoutuser
+curl --silent --show-error -b session.cookies -X GET "$logout_url" >> logoutuser || true
+printf '\n' >> logoutuser
+chmod 600 loginuser logoutuser session.cookies
+
 echo ""
 echo "Complete. Inspect these real outputs:"
 echo "  $DIR/django_server"
