@@ -9,4 +9,5 @@ RUN python3 -m nltk.downloader -d /usr/local/nltk_data vader_lexicon
 ENV NLTK_DATA=/usr/local/nltk_data
 COPY . .
 RUN ls
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+EXPOSE 8080
+CMD ["python3", "-m", "flask", "--app", "app", "run", "--host=0.0.0.0", "--port=8080"]
