@@ -1,0 +1,44 @@
+name: Best Cars CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  lint_python:
+    name: Validate Python Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python linter
+        run: python -m pip install flake8
+      - name: Check Python syntax and critical lint errors
+        run: |
+          python -m compileall -q server/djangoapp server/djangoproj
+          flake8 server/djangoapp server/djangoproj --select=E9,F63,F7,F82 --show-source --statistics
+          echo "Validated Python files successfully"
+
+  lint_js:
+    name: Validate JavaScript Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check Express JavaScript syntax
+        run: |
+          node --check server/database/app.js
+          node --check server/database/dealership.js
+          node --check server/database/review.js
+          echo "Validated JavaScript files successfully"
