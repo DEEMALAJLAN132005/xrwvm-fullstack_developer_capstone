@@ -13,7 +13,12 @@ else
 fi
 
 echo "Installing Python dependencies..."
-python3 -m venv /home/project/bestcars-venv
+# The Skills Network Cloud IDE may lack the standard-library venv package.
+if ! python3 -m venv /home/project/bestcars-venv; then
+  echo "Built-in venv unavailable; using virtualenv..."
+  python3 -m pip install --user virtualenv
+  python3 -m virtualenv /home/project/bestcars-venv
+fi
 source /home/project/bestcars-venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r "$DIR/server/requirements.txt"
